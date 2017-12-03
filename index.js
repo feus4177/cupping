@@ -20,17 +20,29 @@ function tap(fn) {
 }
 
 const trials = [];
-function testOnly(name, fn) {
+const globalTimeout = parseInt(process.env.TIMEOUT, 10) || null;
+function testOnly(name, fn, opts = {}) {
+    const timeout = opts.timeout || globalTimeout;
     const index = trials.push({name, succeeded: null}) - 1;
 
-    function succeed() {
+    function once(finishFn) {
+        return (...args) => {
+            if (trials[index].succeeded !== null) {
+                return trials[index];
+            }
+
+            return finishFn(...args);
+        };
+    }
+
+    const succeed = once(() => {
         trials[index].succeeded = true;
         emitter.emit('success', name);
 
         return trials[index];
-    }
+    });
 
-    function fail(reason) {
+    const fail = once((reason) => {
         trials[index].succeeded = false;
         trials[index].error = reason;
         emitter.emit('failure', name);
@@ -39,11 +51,18 @@ function testOnly(name, fn) {
         }
 
         return trials[index];
-    }
+    });
 
     let result;
     try {
         emitter.emit('start', name);
+
+        if (timeout) {
+            setTimeout(() => (
+                fail(new Error(`${name} exceeded timeout of ${timeout}ms`))
+            ), timeout);
+        }
+
         result = Promise.resolve(fn()).then(succeed).catch(fail);
     } catch (error) {
         result = Promise.resolve(fail(error));
@@ -64,10 +83,14 @@ function test(...args) {
 
 const serialTrials = {};
 function makeSerial(testFn) {
-    return (name, fn, key = 'default') => {
+    return (name, fn, opts = {}) => {
+        const key = opts.key || 'default';
+
+        // Get the last trial in this series or a resolved promise if there are
+        // none.
         const serialTrial = serialTrials[key] || Promise.resolve();
 
-        serialTrials[key] = serialTrial.then(() => testFn(name, fn));
+        serialTrials[key] = serialTrial.then(() => testFn(name, fn, opts));
 
         return serialTrials[key];
     };
