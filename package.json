@@ -1,0 +1,34 @@
+{
+  "name": "cupping",
+  "version": "0.0.1",
+  "description": "Yet another javascript testing library.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/feus4177/cupping.git"
+  },
+  "keywords": [
+    "test",
+    "unit",
+    "test",
+    "tap",
+    "tdd"
+  ],
+  "author": "John Feusi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/feus4177/cupping/issues"
+  },
+  "homepage": "https://github.com/feus4177/cupping#readme",
+  "dependencies": {
+    "indent-string": "^3.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.12.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
+}
