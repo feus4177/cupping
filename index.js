@@ -20,7 +20,7 @@ function tap(fn) {
 }
 
 const trials = [];
-const globalTimeout = parseInt(process.env.TIMEOUT, 10) || null;
+const globalTimeout = parseInt(process.env.CUP_TIMEOUT, 10) || null;
 function testOnly(name, fn, opts = {}) {
     const timeout = opts.timeout || globalTimeout;
     const index = trials.push({name, succeeded: null}) - 1;
@@ -46,7 +46,7 @@ function testOnly(name, fn, opts = {}) {
         trials[index].succeeded = false;
         trials[index].error = reason;
         emitter.emit('failure', name);
-        if (envToBool(process.env.BAIL)) {
+        if (envToBool(process.env.CUP_BAIL)) {
             process.exit();
         }
 
@@ -74,7 +74,7 @@ function testOnly(name, fn, opts = {}) {
 }
 
 function test(...args) {
-    if (envToBool(process.env.ONLY)) {
+    if (envToBool(process.env.CUP_ONLY)) {
         return Promise.resolve();
     }
 
