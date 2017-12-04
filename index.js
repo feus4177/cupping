@@ -32,7 +32,7 @@ function testOnly(name, fn) {
 
     function fail(reason) {
         trials[index].succeeded = false;
-        trials[index].error = reason;
+        trials[index].reason = reason;
         emitter.emit('failure', name);
         if (envToBool(process.env.CUP_BAIL)) {
             process.exit();
@@ -88,13 +88,13 @@ function finish() {
 
         console.log(`not ok ${number} ${trial.name}`);
         console.log('  ---');
-        console.log('  error: |-');
+        console.log('  reason: |-');
         if (trial.succeeded === null) {
             console.log(indent('never finished', 4));
-        } else if (trial.error && trial.error.stack) {
-            console.log(indent(trial.error.stack, 4));
+        } else if (trial.reason && trial.reason.stack) {
+            console.log(indent(trial.reason.stack, 4));
         } else {
-            console.log(indent(String(trial.error), 4));
+            console.log(indent(String(trial.reason), 4));
         }
         console.log('  ...');
     });
