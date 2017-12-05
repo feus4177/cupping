@@ -18,36 +18,55 @@ cup.test('Assertions work', () => {
 
 cup.test('Promise resolution works', resolvePromise);
 
+cup.test('Async finish works', async () => {
+    await resolvePromise();
+});
+
 cup.test('Async resolution works', async () => {
     const result = await resolvePromise();
     return result;
 });
 
-cup.test('Catches asserts', () => {
+cup.test('SHOULD FAIL: Catches asserts', () => {
     assert(false);
 });
 
-cup.test('Promise rejection works', rejectPromise);
+cup.test('SHOULD FAIL: Promise rejection works', rejectPromise);
 
-cup.test('Async rejection works', async () => {
+cup.test('SHOULD FAIL: Promise error works', () => (
+    resolvePromise.then(() => {
+        throw new Error('Promise error');
+    })
+));
+
+cup.test('SHOULD FAIL: Async error works', async () => {
+    throw new Error('Async error');
+});
+
+cup.test('SHOULD FAIL: Async rejection works', async () => {
     const result = await rejectPromise();
     return result;
 });
 
-cup.test('Handles hanging test', () => new Promise(() => null));
+cup.test('SHOULD FAIL: Handles hanging test', () => new Promise(() => null));
 
 setTimeout(() => {
     cup.test('Handles dynamic tests', () => null);
 }, 1000);
 
-for (let i = 1; i <= 5; i++) {
+for (let i = 1; i <= 3; i++) {
     cup.serial(`Handles serial tests (${i})`, () => resolvePromise(0.5));
 }
 
-for (let i = 1; i <= 5; i++) {
+for (let i = 1; i <= 3; i++) {
     cup.serial(
-        `Handles serial rejections tests (${i})`,
+        `SHOULD FAIL: Handles serial rejections tests (${i})`,
         () => rejectPromise(0.25, `rejected ${i}`),
     );
 }
 
+['start', 'end', 'success', 'failure'].map((name) => (
+    cup.test(`Emits ${name}`, () => new Promise((resolve) => {
+        cup.emitter.on(name, resolve);
+    }))
+));
