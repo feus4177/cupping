@@ -11,11 +11,7 @@ function tap(fn) {
     return (...args) => {
         fn(...args);
 
-        if (args.length === 1) {
-            return args[0];
-        }
-
-        return args;
+        return args[0];
     };
 }
 

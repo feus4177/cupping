@@ -29,7 +29,7 @@ cup.test('Should pass after 1 second', () => delay());
 
 cup.test('Should fail after 1 second', () => (
     delay().then(() => {
-        throw new Error('Failed!');
+        throw Error('Failed!');
     })
 ));
 ```
