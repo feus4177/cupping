@@ -72,6 +72,53 @@ function makeSerial(testFn) {
 const serial = makeSerial(test);
 const serialOnly = makeSerial(testOnly);
 
+function shouldThrow(fn, regex) {
+    return () => {
+        let threw = true;
+        try {
+            fn();
+            threw = false;
+        } catch (error) {
+            if (regex) {
+                console.assert(
+                    regex.test(error.message),
+                    `Error message did not match regex: ${error.message}`,
+                );
+            }
+        }
+
+        console.assert(threw, 'Test did not throw');
+    };
+}
+
+function shouldReject(fn, regex) {
+    return () => new Promise((resolve, reject) => (
+        fn().then(() => reject(new Error('Promise did not reject.')))
+            .catch((error) => {
+                if (!error) {
+                    resolve();
+                    return;
+                }
+
+                if (!(error instanceof Error)) {
+                    reject(Error(
+                        `shouldReject expects the rejection reason to either be falsey, or an "Error", instead got: ${error}`,
+                    ));
+                    return;
+                }
+
+                if (regex && !regex.test(error.message)) {
+                    reject(Error(
+                        `Error message did not match regex: ${error.message}`,
+                    ));
+                    return;
+                }
+
+                resolve();
+            })
+    ));
+}
+
 function finish() {
     console.log('TAP version 13');
     console.log(`1..${trials.length}`);
@@ -121,5 +168,7 @@ module.exports = {
     testOnly,
     serial,
     serialOnly,
+    shouldThrow,
+    shouldReject,
     emitter,
 };

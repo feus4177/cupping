@@ -5,7 +5,7 @@ const cup = require('../index.js');
 
 function rejectPromise(seconds = 1, reason = 'rejected') {
     return new Promise((resolve, reject) => (
-        setTimeout(() => reject(reason), 1000 * seconds)
+        setTimeout(() => reject(new Error(reason)), 1000 * seconds)
     ));
 }
 
@@ -30,6 +30,29 @@ cup.test('SHOULD FAIL: Async rejection works', async () => {
 });
 
 cup.test('SHOULD FAIL: Handles hanging test', () => new Promise(() => null));
+
+cup.test('SHOULD FAIL: Handles non-Error reasons', () => (
+    Promise.reject('reason')  // eslint-disable-line prefer-promise-reject-errors
+));
+
+cup.test('SHOULD FAIL: shouldThrow works', cup.shouldThrow(() => null));
+
+cup.test('SHOULD FAIL: shouldThrow regex works', cup.shouldThrow(() => {
+    throw Error('');
+}, /e11e28f1/));
+
+cup.test('SHOULD FAIL: shouldReject works', cup.shouldReject(
+    () => Promise.resolve(),
+));
+
+cup.test('SHOULD FAIL: shouldReject requires Error', cup.shouldReject(
+    () => Promise.reject('reason'),  // eslint-disable-line prefer-promise-reject-errors
+));
+
+cup.test('SHOULD FAIL: shouldReject regex works', cup.shouldReject(
+    () => Promise.reject(Error('')),
+    /e11e28f1/,
+));
 
 for (let i = 1; i <= 3; i++) {
     cup.serial(

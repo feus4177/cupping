@@ -18,6 +18,7 @@
         "newline-per-chained-call": "off",
         "no-console": "off",
         "no-mixed-operators": ["error", {"allowSamePrecedence": true}],
+        "no-multi-spaces": ["error", {ignoreEOLComments: true}],
         "no-param-reassign": "off",
         "no-plusplus": "off",
         "no-self-compare": "off",

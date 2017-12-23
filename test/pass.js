@@ -22,6 +22,21 @@ cup.test('Async resolution works', async () => {
     return result;
 });
 
+cup.test('shouldThrow works', cup.shouldThrow(() => {
+    throw Error();
+}));
+
+cup.test('shouldThrow regex works', cup.shouldThrow(() => {
+    throw Error('e11e28f1');
+}, /e11e28f1/));
+
+cup.test('shouldReject works', cup.shouldReject(() => Promise.reject()));
+
+cup.test('shouldReject regex works', cup.shouldReject(
+    () => Promise.reject(new Error('e11e28f1')),
+    /e11e28f1/,
+));
+
 setTimeout(() => {
     cup.test('Handles dynamic tests', () => null);
 }, 1000);

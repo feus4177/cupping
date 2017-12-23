@@ -34,7 +34,7 @@ cup.test('Should fail after 1 second', () => (
 ));
 ```
 
-Then simply call `node test.js`.
+Then simply call `node test.js`. For more examples checkout out [test/pass.js](https://github.com/feus4177/cupping/blob/master/test/pass.js) and [test/fail.js](https://github.com/feus4177/cupping/blob/master/test/fail.js).
 
 ## API
 ### test(name, fn)
@@ -55,6 +55,16 @@ Creates a new serial test case. Same as `test` except that serial test cases wit
 
 ### serialOnly(name, fn, key = 'default')
 Same as `serial` but will still be run if `process.env.CUP_ONLY` is set to a truthy value.
+
+### shouldThrow(fn, regex)
+Decorator that is designed to wrap test functions that should throw an error synchronously. If `fn` does not throw an error or a regex was provided and the error message does not match the provided regex then the test case will be marked as failed.
+- `fn`: {function}, The test function to be wrapped.
+- `regex`: {regex}, Optional regex to ensure the correct error message is thrown.
+
+### shouldReject(fn, regex)
+Similiar to `shouldThrow` except that it expects `fn` to return a `Promise` that will be rejected. `shouldReject` also has the added caveat that the rejection reason should either be falsey or an instance of `Error`.
+- `fn`: {function}, The test function to be wrapped.
+- `regex`: {regex}, Optional regex to ensure the correct error message is thrown.
 
 ### emitter
 An instance of the [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter) class. It can be used to listen to cupping events using the `emitter.on` method. All cupping events are passed the name of the test case as the only argument. The events are:
