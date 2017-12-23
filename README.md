@@ -57,7 +57,14 @@ Creates a new serial test case. Same as `test` except that serial test cases wit
 Same as `serial` but will still be run if `process.env.CUP_ONLY` is set to a truthy value.
 
 ### shouldThrow(fn, regex)
-Decorator that is designed to wrap test functions that should throw an error synchronously. If `fn` does not throw an error or a regex was provided and the error message does not match the provided regex then the test case will be marked as failed.
+Decorator that is designed to wrap test functions that should throw an error synchronously. If `fn` does not throw an error or a regex was provided and the error message does not match the provided regex then the test case will be marked as failed. Example Usage:
+```javascript
+cup.test('Should pass', cup.shouldThrow(() => {
+    throw Error();
+}));
+
+cup.test('Should fail', cup.shouldThrow(() => null));
+```
 - `fn`: {function}, The test function to be wrapped.
 - `regex`: {regex}, Optional regex to ensure the correct error message is thrown.
 
