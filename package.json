@@ -4,9 +4,9 @@
   "description": "Yet another javascript testing library.",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --reporter=html node test",
-    "real-test": "node test.js"
+    "test": "nyc --reporter=html node test"
   },
+  "files": ["index.js"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/feus4177/cupping.git"
