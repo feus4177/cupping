@@ -1,12 +1,14 @@
 {
   "name": "cupping",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Yet another javascript testing library.",
   "main": "index.js",
   "scripts": {
     "test": "nyc --reporter=html node test"
   },
-  "files": ["index.js"],
+  "files": [
+    "index.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/feus4177/cupping.git"
