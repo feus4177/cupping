@@ -1,7 +1,7 @@
 # cupping
 Yet another javascript testing library. This module was inspired by [this article](https://medium.com/javascript-scene/why-i-use-tape-instead-of-mocha-so-should-you-6aa105d8eaf4) and [node-tap](http://www.node-tap.org/only/). This library has a few subtle differences though based on these tenets.
 1. Asynchronicity should be supported by default.
-1. It should run correctly (I'm looking at you [blue-tape](https://github.com/spion/blue-tape/issues/31).
+1. It should run correctly (I'm looking at you [blue-tape](https://github.com/spion/blue-tape/issues/31)).
 1. You shouldn't need a library to test if two things aren't equal. `assert(1 !== 2, 'something is wrong');` will work just fine. If you need to do deep comparisons or things of that nature, there are great utility [libraries](http://ramdajs.com/) out there to help you with that.
 1. You shouldn't have to tell the test framework how many tests or asserts you plan on running, and you shouldn't have to tell it when you are finished.
 
