@@ -16,7 +16,7 @@ function tap(fn) {
 }
 
 const trials = [];
-function testOnly(name, fn) {
+function testOnly(name, promise) {
     const index = trials.push({name, succeeded: null}) - 1;
 
     function succeed() {
@@ -40,7 +40,12 @@ function testOnly(name, fn) {
     let result;
     try {
         emitter.emit('start', name);
-        result = Promise.resolve(fn()).then(succeed).catch(fail);
+
+        if (promise instanceof Function) {
+            promise = Promise.resolve(promise());
+        }
+
+        result = promise.then(succeed).catch(fail);
     } catch (error) {
         result = Promise.resolve(fail(error));
     }
@@ -60,10 +65,10 @@ function test(...args) {
 
 const serialTrials = {};
 function makeSerial(testFn) {
-    return (name, fn, key = 'default') => {
+    return (name, promise, key = 'default') => {
         const serialTrial = serialTrials[key] || Promise.resolve();
 
-        serialTrials[key] = serialTrial.then(() => testFn(name, fn));
+        serialTrials[key] = serialTrial.then(() => testFn(name, promise));
 
         return serialTrials[key];
     };
@@ -91,9 +96,9 @@ function shouldThrow(fn, regex) {
     };
 }
 
-function shouldReject(fn, regex) {
+function shouldReject(promise, regex) {
     return () => new Promise((resolve, reject) => (
-        fn().then(() => reject(new Error('Promise did not reject.')))
+        promise().then(() => reject(new Error('Promise did not reject.')))
             .catch((error) => {
                 if (!error) {
                     resolve();

@@ -37,23 +37,23 @@ cup.test('Should fail after 1 second', () => (
 Then simply call `node test.js`. For more examples checkout out [test/pass.js](https://github.com/feus4177/cupping/blob/master/test/pass.js) and [test/fail.js](https://github.com/feus4177/cupping/blob/master/test/fail.js).
 
 ## API
-### test(name, fn)
+### test(name, promise)
 Creates a new test case. Will not be run if `process.env.CUP_ONLY` is set to a truthy value.
 - `name`: {String}, The name or label for this test case.
-- `fn`: {function}, The code to be tested. If `fn` throws an error, the test case will be marked as failed. If the function is synchronous and no errors are thrown, the test case is marked as succeeded. If `fn` is an [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function), it will only be marked as succeeded once it finishes. If `fn` returns a promise, the test case will be marked as succeeded or failed if the promise resolves or rejects, respectively.
+- `promise`: {Promise|function}, The code to be tested. The test case will be marked as succeeded or failed if `promise` resolves or rejects, respectively. If `promise` is a function and it throws an error, the test case will be marked as failed. If the function is synchronous and no errors are thrown, the test case is marked as succeeded. If `promise` is an [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function), it will only be marked as succeeded once it finishes. If `promise` is a function that returns a promise, the test case will be marked as succeeded or failed if the promise resolves or rejects, respectively.
 - returns: A `Promise` that is resolved with an object describing the result of the test case. The object will have the following keys:
   - `name`: {String}, The same as above.
   - `succeeded`: {Bool}, Whether or not the test case passed.
   - `reason`: {Any}, The reason the test case failed. Usually an `Error` or string. If the test case passed, it will be `undefined`.
 
-### testOnly(name, fn)
+### testOnly(name, promise)
 Same as `test` but will still be run even if `process.env.CUP_ONLY` is set to a truthy value.
 
-### serial(name, fn, key = 'default')
+### serial(name, promise, key = 'default')
 Creates a new serial test case. Same as `test` except that serial test cases with the same `key` are run, one after the other, in the order that they are created. Series of test cases with different keys will be run in parallel with one another.
 - `key`: {String}, A key to specify which series of test cases this test case belongs to.
 
-### serialOnly(name, fn, key = 'default')
+### serialOnly(name, promise, key = 'default')
 Same as `serial` but will still be run if `process.env.CUP_ONLY` is set to a truthy value.
 
 ### shouldThrow(fn, regex)
@@ -69,8 +69,8 @@ cup.test('Should fail', cup.shouldThrow(() => null));
 - `regex`: {regex}, Optional regex to ensure the correct error message is thrown.
 
 ### shouldReject(fn, regex)
-Similiar to `shouldThrow` except that it expects `fn` to return a `Promise` that will be rejected. `shouldReject` also has the added caveat that the rejection reason should either be falsey or an instance of `Error`.
-- `fn`: {function}, The test function to be wrapped.
+Similiar to `shouldThrow` except that it expects `promise` to either be a `Promise` or return a `Promise` that will be rejected. `shouldReject` also has the added caveat that the rejection reason should either be falsey or an instance of `Error`.
+- `promise`: {Promise}, The test function to be wrapped.
 - `regex`: {regex}, Optional regex to ensure the correct error message is thrown.
 
 ### emitter

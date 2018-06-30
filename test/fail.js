@@ -13,6 +13,11 @@ cup.test('SHOULD FAIL: Catches asserts', () => {
     assert(false);
 });
 
+cup.test(
+    'SHOULD FAIL: Promise object works',
+    new Promise((resolve, reject) => reject()),
+);
+
 cup.test('SHOULD FAIL: Promise rejection works', rejectPromise);
 
 cup.test('SHOULD FAIL: Promise error works', () => (

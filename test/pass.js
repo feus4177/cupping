@@ -11,6 +11,8 @@ cup.test('Assertions work', () => {
     assert(true);
 });
 
+cup.test('Promise object works', new Promise((resolve) => resolve()));
+
 cup.test('Promise resolution works', resolvePromise);
 
 cup.test('Async finish works', async () => {
