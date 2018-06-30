@@ -7,14 +7,6 @@ function envToBool(value) {
     return ['1', 'true', 'True', 'TRUE', true].includes(value);
 }
 
-function tap(fn) {
-    return (...args) => {
-        fn(...args);
-
-        return args[0];
-    };
-}
-
 const trials = [];
 function testOnly(name, promise) {
     const index = trials.push({name, succeeded: null}) - 1;
@@ -50,9 +42,15 @@ function testOnly(name, promise) {
         result = Promise.resolve(fail(error));
     }
 
-    return result.then(tap(() => {
+    return result.then((trial) => {
         emitter.emit('end', name);
-    }));
+
+        if (trial.succeeded) {
+            return trial;
+        }
+
+        return Promise.reject(trial);
+    });
 }
 
 function test(...args) {
@@ -68,7 +66,8 @@ function makeSerial(testFn) {
     return (name, promise, key = 'default') => {
         const serialTrial = serialTrials[key] || Promise.resolve();
 
-        serialTrials[key] = serialTrial.then(() => testFn(name, promise));
+        serialTrials[key] = serialTrial.catch(() => null)
+            .then(() => testFn(name, promise));
 
         return serialTrials[key];
     };

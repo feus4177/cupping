@@ -43,6 +43,30 @@ cup.test('Tests will fail correctly', () => (
     })
 ));
 
+cup.test('Tests will behave correctly', () => (
+    new Promise((resolve, reject) => {
+        const child = spawn('node', ['./test/mixed.js']);
+        child.on('close', (exitCode) => {
+            if (exitCode !== 1) {
+                return reject(Error('Expected exit code to be 1.'));
+            }
+
+            return resolve();
+        });
+
+        const reader = readline.createInterface({input: child.stdout});
+        reader.on('line', (line) => {
+            if (line.startsWith('ok') && !line.includes('SHOULD PASS')) {
+                reject(Error(`Unexpected test success: ${line}`));
+            }
+
+            if (line.startsWith('not ok') && !line.includes('SHOULD FAIL')) {
+                reject(Error(`Unexpected test failure: ${line}`));
+            }
+        });
+    })
+));
+
 cup.test('Tests will bail correctly', () => (
     new Promise((resolve, reject) => {
         const env = Object.create(process.env);

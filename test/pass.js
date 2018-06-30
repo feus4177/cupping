@@ -24,6 +24,10 @@ cup.test('Async resolution works', async () => {
     return result;
 });
 
+cup.test('then works', new Promise((resolve) => {
+    cup.test('then trial', () => null).then(resolve);
+}));
+
 cup.test('shouldThrow works', cup.shouldThrow(() => {
     throw Error();
 }));

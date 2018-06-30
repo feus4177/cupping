@@ -40,6 +40,13 @@ cup.test('SHOULD FAIL: Handles non-Error reasons', () => (
     Promise.reject('reason')  // eslint-disable-line prefer-promise-reject-errors
 ));
 
+cup.test('SHOULD FAIL: then works', new Promise((resolve, reject) => {
+    cup.test(
+        'SHOULD FAIL: then trial',
+        Promise.reject,
+    ).then(resolve).catch(reject);
+}));
+
 cup.test('SHOULD FAIL: shouldThrow works', cup.shouldThrow(() => null));
 
 cup.test('SHOULD FAIL: shouldThrow regex works', cup.shouldThrow(() => {

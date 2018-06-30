@@ -41,7 +41,7 @@ Then simply call `node test.js`. For more examples checkout out [test/pass.js](h
 Creates a new test case. Will not be run if `process.env.CUP_ONLY` is set to a truthy value.
 - `name`: {String}, The name or label for this test case.
 - `promise`: {Promise|function}, The code to be tested. The test case will be marked as succeeded or failed if `promise` resolves or rejects, respectively. If `promise` is a function and it throws an error, the test case will be marked as failed. If the function is synchronous and no errors are thrown, the test case is marked as succeeded. If `promise` is an [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function), it will only be marked as succeeded once it finishes. If `promise` is a function that returns a promise, the test case will be marked as succeeded or failed if the promise resolves or rejects, respectively.
-- returns: A `Promise` that is resolved with an object describing the result of the test case. The object will have the following keys:
+- returns: A `Promise` that is resolved or rejected if the test passed or failed respectively. In either case, it will resolve or reject with an object describing the result of the test case. The object will have the following keys:
   - `name`: {String}, The same as above.
   - `succeeded`: {Bool}, Whether or not the test case passed.
   - `reason`: {Any}, The reason the test case failed. Usually an `Error` or string. If the test case passed, it will be `undefined`.
