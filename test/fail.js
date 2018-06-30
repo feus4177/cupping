@@ -34,11 +34,10 @@ cup.test('SHOULD FAIL: Async rejection works', async () => {
     await rejectPromise();
 });
 
-cup.test('SHOULD FAIL: Handles hanging test', () => new Promise(() => null));
+cup.test('SHOULD FAIL: Handles hanging test', new Promise(() => null));
 
-cup.test('SHOULD FAIL: Handles non-Error reasons', () => (
-    Promise.reject('reason')  // eslint-disable-line prefer-promise-reject-errors
-));
+// eslint-disable-next-line prefer-promise-reject-errors
+cup.test('SHOULD FAIL: Handles non-Error reasons', Promise.reject('reason'));
 
 cup.test('SHOULD FAIL: then works', new Promise((resolve, reject) => {
     cup.test(
@@ -54,15 +53,15 @@ cup.test('SHOULD FAIL: shouldThrow regex works', cup.shouldThrow(() => {
 }, /e11e28f1/));
 
 cup.test('SHOULD FAIL: shouldReject works', cup.shouldReject(
-    () => Promise.resolve(),
+    Promise.resolve(),
 ));
 
 cup.test('SHOULD FAIL: shouldReject requires Error', cup.shouldReject(
-    () => Promise.reject('reason'),  // eslint-disable-line prefer-promise-reject-errors
+    Promise.reject('reason'),  // eslint-disable-line prefer-promise-reject-errors
 ));
 
 cup.test('SHOULD FAIL: shouldReject regex works', cup.shouldReject(
-    () => Promise.reject(Error('')),
+    Promise.reject(Error('')),
     /e11e28f1/,
 ));
 

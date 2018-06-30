@@ -96,8 +96,12 @@ function shouldThrow(fn, regex) {
 }
 
 function shouldReject(promise, regex) {
-    return () => new Promise((resolve, reject) => (
-        promise().then(() => reject(new Error('Promise did not reject.')))
+    if (promise instanceof Function) {
+        promise = promise();
+    }
+
+    return new Promise((resolve, reject) => (
+        promise.then(() => reject(new Error('Promise did not reject.')))
             .catch((error) => {
                 if (!error) {
                     resolve();

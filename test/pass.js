@@ -36,10 +36,14 @@ cup.test('shouldThrow regex works', cup.shouldThrow(() => {
     throw Error('e11e28f1');
 }, /e11e28f1/));
 
-cup.test('shouldReject works', cup.shouldReject(() => Promise.reject()));
+cup.test('shouldReject works', cup.shouldReject(Promise.reject()));
+
+cup.test('shouldReject works with functions', cup.shouldReject(
+    () => Promise.reject(),
+));
 
 cup.test('shouldReject regex works', cup.shouldReject(
-    () => Promise.reject(new Error('e11e28f1')),
+    Promise.reject(new Error('e11e28f1')),
     /e11e28f1/,
 ));
 
@@ -48,5 +52,5 @@ setTimeout(() => {
 }, 1000);
 
 for (let i = 1; i <= 3; i++) {
-    cup.serial(`Handles serial tests (${i})`, () => resolvePromise(0.5));
+    cup.serial(`Handles serial tests (${i})`, resolvePromise(0.5));
 }

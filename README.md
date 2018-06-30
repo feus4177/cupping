@@ -70,7 +70,7 @@ cup.test('Should fail', cup.shouldThrow(() => null));
 
 ### shouldReject(promise, regex)
 Similiar to `shouldThrow` except that it expects `promise` to either be a `Promise` or return a `Promise` that will be rejected. `shouldReject` also has the added caveat that the rejection reason should either be falsey or an instance of `Error`.
-- `promise`: {Promise}, The test function to be wrapped.
+- `promise`: {Promise|function}, The test promise to be wrapped.
 - `regex`: {regex}, Optional regex to ensure the correct error message is thrown.
 
 ### emitter
