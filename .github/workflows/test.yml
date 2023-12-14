@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - test
-      
+
 jobs:
   generate-release:
     runs-on: ubuntu-latest
@@ -25,7 +25,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '20.10.0'
+          node-version: '18.17.0'
           cache: pnpm
 
       - name: install frozen deps
@@ -41,4 +41,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: alert team
-        run: echo "$steps.publish_version.outputs.pullRequestNumber"
+        run: echo "${{ steps.publish_version.outputs.pullRequestNumber }}"
