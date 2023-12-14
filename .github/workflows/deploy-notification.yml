@@ -2,12 +2,13 @@ name: deploy notification
 on:
   pull_request:
     types: [opened, reopened, synchronize, edited]
-    branches:
-      - changeset-release/test
+    # branches:
+    #   - changeset-release/test
       
 jobs:
   generate-release:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - run: echo "${{ github.ref_name }}"
       - run: echo "${{ github.event.pull_request.body }}"
