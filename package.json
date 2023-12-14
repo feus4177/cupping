@@ -1,6 +1,6 @@
 {
   "name": "cupping",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Yet another javascript testing library.",
   "main": "index.js",
   "scripts": {
