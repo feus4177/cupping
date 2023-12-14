@@ -3,41 +3,42 @@ on:
   push:
     branches:
       - test
-  jobs:
-    generate-release:
-      runs-on: ubuntu-latest
-      timeout-minutes: 20
-      if: github.event.ref == 'refs/heads/test'
-      env:
-        CI: true
-        PNPM_CACHE_FOLDER: .pnpm-store
-      steps:
-        - name: set short sha output
-          id: vars
-          run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      
+jobs:
+  generate-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: github.event.ref == 'refs/heads/test'
+    env:
+      CI: true
+      PNPM_CACHE_FOLDER: .pnpm-store
+    steps:
+      - name: set short sha output
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
-        - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-        - uses: pnpm/action-setup@v2.2.3
-          with:
-            version: 7.1.9
+      - uses: pnpm/action-setup@v2.2.3
+        with:
+          version: 7.1.9
 
-        - uses: actions/setup-node@v3
-          with:
-            node-version: '20.10.0'
-            cache: pnpm
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10.0'
+          cache: pnpm
 
-        - name: install frozen deps
-          run: pnpm install
+      - name: install frozen deps
+        run: pnpm install
 
-        - name: create and publish versions
-          id: publish_version
-          uses: changesets/action@v1
-          with:
-            commit: 'chore: update versions'
-            title: 'chore: update versions'
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: create and publish versions
+        id: publish_version
+        uses: changesets/action@v1
+        with:
+          commit: 'chore: update versions'
+          title: 'chore: update versions'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-        - name: alert team
-          run: echo "$steps.publish_version.outputs.pullRequestNumber"
+      - name: alert team
+        run: echo "$steps.publish_version.outputs.pullRequestNumber"
