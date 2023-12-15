@@ -1,5 +1,0 @@
----
-"cupping": patch
----
-
-Full test
