@@ -39,6 +39,3 @@ jobs:
           title: 'chore: update versions'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: alert team
-        run: echo "${{ steps.publish_version.outputs.pullRequestNumber }}"
