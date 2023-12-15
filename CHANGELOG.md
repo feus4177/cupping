@@ -1,5 +1,11 @@
 # cupping
 
+## 0.0.8
+
+### Patch Changes
+
+- 9e05db9: Fix action condition
+
 ## 0.0.7
 
 ### Patch Changes
