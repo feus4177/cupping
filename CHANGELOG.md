@@ -1,5 +1,14 @@
 # cupping
 
+## 0.0.7
+
+### Patch Changes
+
+- a6f8370: Updating test branch
+- cb47559: Grabbing PR body from API
+- 6ace5ce: Fixed node version
+- 4a2b5b8: Full test
+
 ## 0.0.6
 
 ### Patch Changes
