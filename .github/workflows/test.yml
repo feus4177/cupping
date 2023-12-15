@@ -6,17 +6,13 @@ on:
 
 jobs:
   generate-release:
+    if: ${{ !contains(github.event.ref.message, 'changeset-release')}}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    if: github.event.ref == 'refs/heads/test'
+    timeout-minutes: 10
     env:
       CI: true
       PNPM_CACHE_FOLDER: .pnpm-store
     steps:
-      - name: set short sha output
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
       - uses: actions/checkout@v3
 
       - uses: pnpm/action-setup@v2.2.3
@@ -25,17 +21,39 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '18.17.0'
+          node-version: '20.10.0'
           cache: pnpm
 
       - name: install frozen deps
         run: pnpm install
 
       - name: create and publish versions
-        id: publish_version
+        id: publish-version
         uses: changesets/action@v1
         with:
+          version: pnpm ci:version
           commit: 'chore: update versions'
           title: 'chore: update versions'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      pull-request-number: publish-version.outputs.pullRequestNumber
+
+  send-slack-message:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [generate-release]
+    if: needs.generate-release.outputs.pull-request-number
+    steps:
+      - uses: octokit/request-action@v2.x
+        id: get-pr
+        with:
+          route: GET /repos/{owner}/{repo}/pulls/${{ needs.generate-release.outputs.pull-request-number }}
+          owner: octokit
+          repo: request-action
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: "echo PR: '${{ steps.get-pr.outputs.data }}'"
+
+      - run: "echo body: '${{ fromJson(steps.get-pr.outputs.data).body }}'"
