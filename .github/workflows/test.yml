@@ -51,6 +51,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: "echo PR: '${{ steps.get-pr.outputs.data }}'"
-
-      - run: "echo body: '${{ fromJson(steps.get-pr.outputs.data).body }}'"
+      - name: print pr
+        run: "echo '${{ fromJson(steps.get-pr.outputs.data).body }}'"
