@@ -2,8 +2,8 @@ name: deploy notification
 on:
   pull_request:
     types: [opened, reopened, synchronize, edited]
-    # branches:
-    #   - test?
+    branches:
+      - test
       
 jobs:
   generate-release:
