@@ -6,6 +6,7 @@ on:
 
 jobs:
   generate-release:
+    # Don't rerun
     if: ${{ !contains(github.event.head_commit.message, 'changeset-release')}}
     runs-on: ubuntu-latest
     timeout-minutes: 10
