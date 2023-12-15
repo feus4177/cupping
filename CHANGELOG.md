@@ -1,5 +1,12 @@
 # cupping
 
+## 0.0.6
+
+### Patch Changes
+
+- 8cb2acc: testing notification
+- 6d99512: Removed branch filtering
+
 ## 0.0.5
 
 ### Patch Changes
