@@ -9,6 +9,7 @@ jobs:
   generate-release:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    if: github.event.pull_request.head.ref == 'changeset-release/test'
     steps:
       - run: echo "${{ github.event.pull_request.body }}"
       - run: echo "base_ref ${{ github.base_ref }}"
