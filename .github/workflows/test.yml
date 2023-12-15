@@ -52,4 +52,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: print pr
-        run: "echo ${{ fromJson(steps.get-pr.outputs.data).body }}"
+        run: echo "${{ fromJson(steps.get-pr.outputs.data).body }}"
