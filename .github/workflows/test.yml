@@ -47,9 +47,7 @@ jobs:
       - uses: octokit/request-action@v2.x
         id: get-pr
         with:
-          route: GET /repos/{owner}/{repo}/pulls/${{ needs.generate-release.outputs.pull-request-number }}
-          owner: octokit
-          repo: request-action
+          route: GET /repos/${{ github.repository_owner }}/${{ github.repository }}/pulls/${{ needs.generate-release.outputs.pull-request-number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
