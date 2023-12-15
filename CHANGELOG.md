@@ -1,5 +1,12 @@
 # cupping
 
+## 0.0.9
+
+### Patch Changes
+
+- 0d6b178: Staging message
+- dbf0ba1: Master change message
+
 ## 0.0.8
 
 ### Patch Changes

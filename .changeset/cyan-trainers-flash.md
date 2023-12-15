@@ -1,5 +1,0 @@
----
-"cupping": patch
----
-
-Staging message
